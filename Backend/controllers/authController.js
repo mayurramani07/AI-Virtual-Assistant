@@ -77,3 +77,4 @@ const logOut = async(req,res) => {
     }
 }
 
+module.exports = { logIn, logOut, signUp };
