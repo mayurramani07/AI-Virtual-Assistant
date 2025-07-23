@@ -5,7 +5,8 @@ dotenv.config();
 const connectDb = require('./config/db.js');
 const authRouter  = require('./routes/authRoutes.js');
 const cookiesParser = require('cookie-parser');
-const cors = require('cors')
+const cors = require('cors');
+const userRouter = require('./routes/userRoutes.js');
 
 
 app.use(cors({
@@ -16,6 +17,7 @@ const port = process.env.PORT || 5000
 app.use(express.json());
 app.use(cookiesParser());
 app.use("/api/auth",authRouter)
+app.use("/api/user",userRouter)
 
 
 app.get("/", (req,res) => {
