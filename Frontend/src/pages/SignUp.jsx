@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { serverUrl } = useContext(UserDataContext);
+  const { serverUrl, userData, setUserData} = useContext(UserDataContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,12 +22,13 @@ const SignUp = () => {
         name,
         email,
         password,
-      },{withCredentials:true});
-      console.log('Signup successful:', result.data);
-
+      },{withCredentials:true})
+      navigate('/customize')
+      setUserData(result.data)
       navigate('/signin');
     } catch (error) {
       console.log(error);
+      setUserData(null);
       setErr(error.response.data.message)
     }
   };
