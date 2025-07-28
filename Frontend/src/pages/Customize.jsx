@@ -7,7 +7,8 @@ import image4 from "../assets/image4.png";
 import image5 from "../assets/image5.png";
 import image6 from "../assets/image6.jpeg";
 import image7 from "../assets/image7.jpeg";
-import { UserDataContext } from '../context/userContext';
+import { UserDataContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const Customize = () => {
   const {
@@ -17,6 +18,7 @@ const Customize = () => {
     setSelectedImage
   } = useContext(UserDataContext);
 
+  const navigate = useNavigate()
   const inputImage = useRef();
 
   const handleImage = (e) => {
@@ -86,7 +88,9 @@ const Customize = () => {
         <div className="mt-12 w-full flex justify-center">
           <button
             type="submit"
-            className="w-full max-w-sm bg-white text-black font-semibold py-3 rounded-lg hover:bg-gray-200 transition-all">
+            className="w-full max-w-sm bg-white text-black font-semibold py-3 rounded-lg hover:bg-gray-200 transition-all cursor-pointer"
+            onClick={() => navigate("/customize2")}
+          >
             Next
           </button>
         </div>
