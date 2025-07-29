@@ -1,20 +1,24 @@
 import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
-import { UserDataContext } from '../context/UserContext';
+import { UserDataContext } from '../context/userContext';
 
 const Card = ({ image }) => {
   const {
     selectedImage,
     setSelectedImage,
+    setFrontendImage,
+    setBackendImage,
   } = useContext(UserDataContext);
 
   const isSelected = selectedImage === image;
 
   const handleClick = () => {
     if (isSelected) {
-      setSelectedImage(null); 
+      setSelectedImage(null);
+      setFrontendImage(null); 
+      setBackendImage(null);  
     } else {
-      setSelectedImage(image); 
+      setSelectedImage(image);
     }
   };
 

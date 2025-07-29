@@ -7,7 +7,7 @@ import image4 from "../assets/image4.png";
 import image5 from "../assets/image5.png";
 import image6 from "../assets/image6.jpeg";
 import image7 from "../assets/image7.jpeg";
-import { UserDataContext } from '../context/UserContext';
+import { UserDataContext } from '../context/userContext';
 import { useNavigate } from 'react-router-dom';
 
 const Customize = () => {
