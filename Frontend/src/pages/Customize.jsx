@@ -18,7 +18,7 @@ const Customize = () => {
     setSelectedImage
   } = useContext(UserDataContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const inputImage = useRef();
 
   const handleImage = (e) => {
