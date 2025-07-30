@@ -23,9 +23,9 @@ const App = () => {
         }
       />
       <Route path="/signin" element={!UserData ? <SignIn /> : <Navigate to="/" />} />
-      <Route path="/signup" element={!UserData ? <SignUp /> : <Navigate to="/" />} />
-      <Route path="/customize" element={UserData ? <Customize /> : <Navigate to="/signin" />} />
-      <Route path="/customize2" element={UserData ? <Customize2 /> : <Navigate to="/signin" />} />
+      <Route path="/signup" element={!UserData ? <SignUp /> : <Navigate to="/customize" />} />
+      <Route path="/customize" element={UserData ? <Customize /> : <Navigate to="/signup" />} />
+      <Route path="/customize2" element={UserData ? <Customize2 /> : <Navigate to="/signup" />} />
     </Routes>
   );
 };

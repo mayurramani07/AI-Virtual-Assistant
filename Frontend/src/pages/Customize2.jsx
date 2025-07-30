@@ -35,14 +35,21 @@ const Customize2 = () => {
 
       console.log("Update successful:", result.data);
       setUserData(result.data);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       console.error("Failed to update assistant:", error.message);
     }
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-t from-black to-[#0a0236] flex flex-col items-center px-4 py-10">
+    <div className="w-full min-h-screen bg-gradient-to-t from-black to-[#0a0236] flex flex-col items-center px-4 py-10 relative">
+      <button
+        className="absolute top-6 left-4 text-white text-2xl hover:text-gray-300 transition cursor-pointer"
+        onClick={() => navigate('/customize')}
+      >
+      ←
+      </button>
+
       <h2 className="text-white text-2xl sm:text-4xl font-semibold text-center mt-20 mb-6">
         Enter Your Assistant Name
       </h2>
@@ -56,7 +63,7 @@ const Customize2 = () => {
       />
 
       {(backendImage || selectedImage) && (
-        <div className="mt-6 w-32 h-32 rounded-full overflow-hidden border-4 border-white">
+        <div className="mt-6 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
           <img
             src={
               backendImage instanceof File
@@ -71,7 +78,7 @@ const Customize2 = () => {
 
       {AssistantName.trim() && (
         <p className="text-white text-xl mt-4">
-          Preview Name: <span className="font-bold">{AssistantName}</span>
+          Assistant Name: <span className="font-bold">{AssistantName}</span>
         </p>
       )}
 
