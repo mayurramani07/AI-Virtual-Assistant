@@ -5,7 +5,7 @@ import SignUp from './pages/SignUp';
 import Customize from './pages/Customize';
 import Customize2 from './pages/Customize2';
 import Home from './pages/Home'; 
-import { UserDataContext } from './context/userContext';
+import { UserDataContext } from './context/UserContext';
 
 const App = () => {
   const { UserData } = useContext(UserDataContext);
@@ -23,7 +23,7 @@ const App = () => {
         }
       />
       <Route path="/signin" element={!UserData ? <SignIn /> : <Navigate to="/" />} />
-      <Route path="/signup" element={!UserData ? <SignUp /> : <Navigate to="/customize" />} />
+      <Route path="/signup" element={!UserData ? <SignUp /> : <Navigate to="/" />} />
       <Route path="/customize" element={UserData ? <Customize /> : <Navigate to="/signup" />} />
       <Route path="/customize2" element={UserData ? <Customize2 /> : <Navigate to="/signup" />} />
     </Routes>
