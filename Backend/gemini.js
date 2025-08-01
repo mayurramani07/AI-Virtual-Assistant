@@ -1,8 +1,9 @@
-import axios from "axios"
+const axios = require("axios");
 
 const geminiResponse = async (command, assistantName, userName) => {
   try {
     const apiUrl = process.env.GEMINI_API_URL;
+    const apiKey = process.env.GEMINI_API_KEY;
 
     const prompt = `You are a virtual assistant named ${assistantName}, created by ${userName}.  
 You are not Google. You must now act like a voice-enabled assistant.
@@ -44,34 +45,29 @@ Now your user input: ${command}
 `;
 
     const result = await axios.post(
-      apiUrl,
+      `${apiUrl}?key=${apiKey}`,
       {
         contents: [
           {
-            parts: [
-              {
-                text: prompt
-              }
-            ]
+            parts: [{ text: prompt }]
           }
         ]
       },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.GEMINI_API_KEY}` 
+          "Content-Type": "application/json"
         }
       }
     );
 
     const responseText =
-      result?.data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+      result?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
 
     return responseText;
   } catch (error) {
-    console.error("Gemini API error:", error.message);
+    console.error("Gemini API error:", error.response?.data || error.message);
     return null;
   }
 };
 
-export default geminiResponse;
+module.exports = geminiResponse;

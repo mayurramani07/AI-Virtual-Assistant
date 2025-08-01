@@ -5,7 +5,7 @@ import { UserDataContext } from '../context/UserContext';
 import { useEffect } from 'react';
 
 const Home = () => {
-  const { UserData, serverUrl, setUserData } = useContext(UserDataContext);
+  const { UserData, serverUrl, setUserData, getGeminiResponse } = useContext(UserDataContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -27,13 +27,19 @@ const Home = () => {
     recognition.continuous=true,
     recognition.lang = 'en-US'
 
-    recognition.onresult=(e) => {
+    recognition.onresult=async(e) => {
       const transcript = e.results[e.results.length-1][0].transcript.trim()
       console.log("I heard : " + transcript);
-    }
-    recognition.start()
+    
+      if(transcript.toLowerCase().includes(UserData.assistantName.toLowerCase())) {
+        const data = await getGeminiResponse(transcript)
+        console.log(data)
+      }
+    };
 
-  
+    recognition.start();
+
+    return() => recognition.stop();
   }, [])
 
 
