@@ -5,9 +5,9 @@ export const UserDataContext = createContext();
 function UserContext({ children }) {
   const serverUrl = "http://localhost:8000";
   const [UserData, setUserData] = useState(null);
-  const [frontendImage, setFrontendImage] = useState(null)
-  const [backendImage, setBackendImage] = useState(null)
-  const [selectedImage , setSelectedImage] = useState(null)
+  const [frontendImage, setFrontendImage] = useState(null);
+  const [backendImage, setBackendImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleCurrentUser = async () => {
     try {
@@ -21,6 +21,16 @@ function UserContext({ children }) {
     }
   };
 
+  const getGeminiResponse = async (command) => {
+    try {
+      const result = await axios.post(`${serverUrl}/api/user/asktoassistant`,{ command },{ withCredentials: true });
+      return result.data;
+    } catch (error) {
+      console.error("Error getting Gemini response:", error.message);
+      return null;
+    }
+  };
+
   useEffect(() => {
     handleCurrentUser();
   }, []);
@@ -30,9 +40,13 @@ function UserContext({ children }) {
     UserData,
     setUserData,
     handleCurrentUser,
-    frontendImage, setFrontendImage,
-    backendImage, setBackendImage,
-    selectedImage , setSelectedImage,
+    frontendImage,
+    setFrontendImage,
+    backendImage,
+    setBackendImage,
+    selectedImage,
+    setSelectedImage,
+    getGeminiResponse,
   };
 
   return (

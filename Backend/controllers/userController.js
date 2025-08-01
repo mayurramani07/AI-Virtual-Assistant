@@ -95,7 +95,7 @@ const askToAssistant = async(req,res) => {
           case 'youtube_play':
           case 'general':
           case 'calculator_open':
-          case 'intagram_open':
+          case 'instagram_open':
           case 'facebook_open':
           case 'weather-show':
             return res.json({
@@ -112,4 +112,4 @@ const askToAssistant = async(req,res) => {
 
   }
 }
-module.exports = { getCurrentUser, updateAssistant };
+module.exports = { askToAssistant, getCurrentUser, updateAssistant };

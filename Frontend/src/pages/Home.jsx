@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserDataContext } from '../context/UserContext';
+import { useEffect } from 'react';
 
 const Home = () => {
   const { UserData, serverUrl, setUserData } = useContext(UserDataContext);
@@ -18,6 +19,24 @@ const Home = () => {
       navigate('/signin');
     }
   };
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+
+    const recognition = new SpeechRecognition()
+    recognition.continuous=true,
+    recognition.lang = 'en-US'
+
+    recognition.onresult=(e) => {
+      const transcript = e.results[e.results.length-1][0].transcript.trim()
+      console.log("I heard : " + transcript);
+    }
+    recognition.start()
+
+  
+  }, [])
+
+
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-t from-black to-[#0a0236] px-4 py-8 flex flex-col items-center">
