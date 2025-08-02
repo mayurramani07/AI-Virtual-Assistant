@@ -11,6 +11,7 @@ const Home = () => {
   const isRecognizingRef = useRef(false); 
   const recognitionRef = useRef(null);
   const synth = window.speechSynthesis;
+  const recognitionRestartTimeout = useRef(null);
 
   const handleLogout = async () => {
     try {
@@ -25,11 +26,37 @@ const Home = () => {
   };
 
   const speak = (text) => {
+    if (!text) return;
+
+    synth.cancel(); 
+
     const utterance = new SpeechSynthesisUtterance(text);
     isSpeakingRef.current = true;
+
+    utterance.onstart = () => {
+      if (recognitionRef.current && isRecognizingRef.current) {
+        recognitionRef.current.stop();
+        isRecognizingRef.current = false;
+      }
+    };
+
     utterance.onend = () => {
       isSpeakingRef.current = false;
+
+      setTimeout(() => {
+        if (recognitionRef.current && !isRecognizingRef.current) {
+          try {
+            recognitionRef.current.start();
+            isRecognizingRef.current = true;
+          } catch (err) {
+            if (err.name !== 'InvalidStateError') {
+              console.error('Recognition restart error:', err);
+            }
+          }
+        }
+      }, 500);
     };
+
     synth.speak(utterance);
   };
 
@@ -74,16 +101,19 @@ const Home = () => {
     recognitionRef.current = recognition;
 
     const safeRecognition = () => {
-      if (!isSpeakingRef.current && !isRecognizingRef.current) {
+      if (!recognitionRef.current || isSpeakingRef.current || isRecognizingRef.current) return;
+
+      clearTimeout(recognitionRestartTimeout.current);
+      recognitionRestartTimeout.current = setTimeout(() => {
         try {
-          recognition.start();
-          console.log("Recognition requested to start");
+          recognitionRef.current.start();
+          console.log('Recognition safely started');
         } catch (err) {
           if (err.name !== 'InvalidStateError') {
-            console.error('Start error:', err);
+            console.error('Recognition start error:', err);
           }
         }
-      }
+      }, 500);
     };
 
     recognition.onstart = () => {
@@ -96,9 +126,7 @@ const Home = () => {
       console.log('Recognition ended');
       isRecognizingRef.current = false;
       setListening(false);
-      if (!isSpeakingRef.current) {
-        setTimeout(() => safeRecognition(), 1000);
-      }
+      if (!isSpeakingRef.current) safeRecognition();
     };
 
     recognition.onerror = (event) => {
@@ -106,7 +134,7 @@ const Home = () => {
       isRecognizingRef.current = false;
       setListening(false);
       if (event.error !== 'aborted' && !isSpeakingRef.current) {
-        setTimeout(() => safeRecognition(), 1000);
+        safeRecognition();
       }
     };
 
@@ -122,7 +150,28 @@ const Home = () => {
 
     safeRecognition(); 
 
-    return () => recognition.stop();
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.onstart = null;
+        recognitionRef.current.onend = null;
+        recognitionRef.current.onerror = null;
+        recognitionRef.current.onresult = null;
+
+        try {
+          recognitionRef.current.stop();
+        } catch (err) {
+          console.warn('Error stopping recognition on cleanup:', err);
+        }
+
+        recognitionRef.current = null;
+      }
+
+      if (recognitionRestartTimeout.current) {
+        clearTimeout(recognitionRestartTimeout.current);
+      }
+
+      synth.cancel();
+    };
   }, []);
 
   return (
