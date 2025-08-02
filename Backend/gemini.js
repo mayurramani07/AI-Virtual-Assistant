@@ -60,10 +60,15 @@ Now your user input: ${command}
       }
     );
 
-    const responseText =
+    let responseText =
       result?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
 
-    return responseText;
+    // ✅ Fix: Remove code block wrappers (e.g. ```json ... ```)
+    if (responseText.startsWith("```")) {
+      responseText = responseText.replace(/```(?:json)?/gi, "").replace(/```$/, "").trim();
+    }
+
+    return JSON.parse(responseText);
   } catch (error) {
     console.error("Gemini API error:", error.response?.data || error.message);
     return null;
