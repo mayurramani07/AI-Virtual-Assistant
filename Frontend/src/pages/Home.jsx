@@ -20,6 +20,12 @@ const Home = () => {
     }
   };
 
+  const speak = (text) => {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text)
+    window.speechSynthesis.speak(utterance)
+  }
+
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
@@ -34,6 +40,7 @@ const Home = () => {
       if(transcript.toLowerCase().includes(UserData.assistantName.toLowerCase())) {
         const data = await getGeminiResponse(transcript)
         console.log(data)
+        speak(data.response)
       }
     };
 
