@@ -31,6 +31,12 @@ const Home = () => {
     synth.cancel(); 
 
     const utterance = new SpeechSynthesisUtterance(text);
+    // utterance.lang = 'hi-IN';
+    // const voices = window.speechSynthesis.getVoices()
+    // const hindiVoice = voice.find(v => v.lang === 'hi-IN');
+    // if(hindiVoice) {
+    //   utterance.voice = hindiVoice;
+    // } 
     isSpeakingRef.current = true;
 
     utterance.onstart = () => {

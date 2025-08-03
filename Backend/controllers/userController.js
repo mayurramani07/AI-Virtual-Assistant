@@ -55,6 +55,8 @@ const askToAssistant = async (req, res) => {
   try {
     const { command } = req.body;
     const user = await User.findById(req.userId);
+    user.history.push(command)
+    user.save()
     const userName = user.name;
     const assistantName = user.assistantName;
 
