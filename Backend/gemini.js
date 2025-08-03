@@ -24,7 +24,7 @@ Instructions:
 - "response": A short, natural-sounding response suitable for voice output. Examples: "Sure, opening it now", "Here’s what I found", "It’s 5 PM", "Today is Monday".
 
 Explanation of "type":
-- "general": For general questions or factual answers.
+- "general" should be used for general questions or factual answers. If the assistant already knows the answer confidently, it should also categorize it as "general" and provide a short, concise response.
 - "google-search": When the user wants to search something on Google.
 - "youtube-search": When the user wants to search something on YouTube.
 - "youtube-play": When the user wants to directly play a video, song, or content on YouTube.

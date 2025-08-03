@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserDataContext } from '../context/UserContext';
+import userImg from "../assets/user.gif"
 
 const Home = () => {
   const { UserData, serverUrl, setUserData, getGeminiResponse } = useContext(UserDataContext);
   const navigate = useNavigate();
   const [listening, setListening] = useState(false);
+  // const [userText,setUserText] = useState("")
+  // const [aiText, setAiText] = useState("")
   const isSpeakingRef = useRef(false);
   const isRecognizingRef = useRef(false); 
   const recognitionRef = useRef(null);
@@ -60,7 +63,7 @@ const Home = () => {
             }
           }
         }
-      }, 500);
+      }, 1500);
     };
 
     synth.speak(utterance);
@@ -215,6 +218,7 @@ const Home = () => {
       <h1 className="text-white text-lg sm:text-xl font-semibold text-center mt-6">
         Hello, I am {UserData?.assistantName || 'your assistant'}
       </h1>
+      {<img src={userImg} alt="" className='w-[120px] sm:w-[160px] md:w-[200px] mx-auto'/>}
     </div>
   );
 };
