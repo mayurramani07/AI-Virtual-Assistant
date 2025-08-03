@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
-import { UserDataContext } from '../context/userContext';
+import { UserDataContext } from '../context/UserContext';
 
 const Card = ({ image }) => {
   const {
